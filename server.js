@@ -55,7 +55,7 @@ app.get("/scrape", function(req, res) {
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).children().attr("alt");
       result.link = $(this).attr("href");
-      result.image = $(this).children().src;
+      // result.image = $(this).children().src;
 
       console.log(result.title)
 
