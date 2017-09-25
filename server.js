@@ -36,18 +36,27 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://heroku_fvg3h2vj:1g5e41hdn29pcptdh80q3o25k1@ds149124.mlab.com:49124/heroku_fvg3h2vj");
+
+
+ mongoose.connect("mongodb://heroku_fvg3h2vj:1g5e41hdn29pcptdh80q3o25k1@ds149124.mlab.com:49124/heroku_fvg3h2vj", function(err){
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log("Mongoose connection successful.");
+        }
+    });
+
 var db = mongoose.connection;
 
-// Show any mongoose errors
-db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-});
+// db.on("error", function(error) {
+//   console.log("Mongoose Error: ", error);
+// });
 
-// Once logged in to the db through mongoose, log a success message
-db.once("openUri", function() {
-  console.log("Mongoose connection successful.");
-});
+// /
+// db.once("openUri", function() {
+//   console.log("Mongoose connection successful.");
+// });
 
 
 // Routes
@@ -60,14 +69,14 @@ app.get("/scrape", function(req, res) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
     // Now, we grab every h2 within an article tag, and do the following:
-    $("div.shareButtonsList").each(function(i, element) {
+    $("a.item-title").each(function(i, element) {
 
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this).children("a.item-title").text();
-      result.link = $(this).children("a.item-thumbnail").attr("href");
+      result.title = $(this).text();
+      result.link = $(this).attr("href");
 
       // Using our Article model, create a new entry
       // This effectively passes the result object to the entry (and the title and link)
