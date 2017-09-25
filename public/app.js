@@ -5,7 +5,10 @@ $.getJSON("/articles", function(data) {
     // Display the apropos information on the page
     $("<div/>")
     $("#articles").append(
-    `yo!`);
+    `${data[i]._id}
+    ${data[i].title}
+    ${data[i].link}
+    ${data[i].image}`);
   }
 });
 
