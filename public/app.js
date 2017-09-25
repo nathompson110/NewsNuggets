@@ -6,8 +6,11 @@ $.getJSON("/articles", function(data) {
     $("<div/>")
     $("#articles").append(
     `${data[i]._id}
+
     ${data[i].title}
+
     ${data[i].link}
+    
     ${data[i].image}`);
   }
 });
